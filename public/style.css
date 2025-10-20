@@ -2,9 +2,31 @@
 * {box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
 body{text-align:center;padding:40px 15px;background:#f9f9f9 url("bg.jpg");color:color:#dddddd;}
 h1{margin-bottom:30px;font-size:28px}
-.btn{display:inline-block;width:90%;max-width:400px;margin:12px 0;padding:18px 24px;font-size:18px;border:none;border-radius:8px;text-decoration:none;color:#007bff;background:#ffffff;transition:.3s;border:1px solid #007bff}
-.btn:hover{opacity:.9;transform:translateY(-2px)}
-.btn.accent{background:#ff6600} /* привлекающая кнопка */
+.btn{
+  display:inline-block;
+  width:90%;
+  max-width:400px;
+  margin:12px 0;
+  padding:18px 24px;
+  font-size:18px;
+  border:1px solid color:#dddddd;  /* ← цвет обводки */
+  border-radius:8px;
+  text-decoration:none;
+  color:#dddddd;             /* ← цвет текста */
+  background:#ffffff;        /* белый фон */
+  transition:.3s;
+}
+.btn:hover{
+  opacity:.9;
+  transform:translateY(-2px);
+}
+
+/* Акцентная кнопка – тот же стиль, но обводка оранжевая */
+.btn.accent{
+  border-color:#dddddd;      /* ← обводка оранжевая */
+  color:#dddddd;             /* ← текст оранжевый */
+  background:#ffffff;
+}
 form{width:90%;max-width:400px;margin:20px auto;text-align:left}
 input,textarea{width:100%;margin:10px 0;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px}
 textarea{min-height:100px;resize:vertical}
