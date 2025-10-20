@@ -9,10 +9,10 @@ h1{margin-bottom:30px;font-size:28px}
   margin:12px 0;
   padding:18px 24px;
   font-size:18px;
-  border:1px solid color:#dddddd;  /* ← цвет обводки */
+  border:1px solid color:#000;  /* ← цвет обводки */
   border-radius:8px;
   text-decoration:none;
-  color:#dddddd;             /* ← цвет текста */
+  color:#000;             /* ← цвет текста */
   background:#ffffff;        /* белый фон */
   transition:.3s;
 }
@@ -23,9 +23,9 @@ h1{margin-bottom:30px;font-size:28px}
 
 /* Акцентная кнопка – тот же стиль, но обводка оранжевая */
 .btn.accent{
-  border-color:#dddddd;      /* ← обводка оранжевая */
-  color:#dddddd;             /* ← текст оранжевый */
-  background:#ffffff;
+  border-color:#000;      /* оранжевая обводка */
+  color:#000;             /* белый текст */
+  background:#ff6600;        /* оранжевый фон */
 }
 form{width:90%;max-width:400px;margin:20px auto;text-align:left}
 input,textarea{width:100%;margin:10px 0;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px}
