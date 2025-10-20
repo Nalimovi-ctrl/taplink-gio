@@ -1,6 +1,6 @@
 ﻿/* Минималистичный адаптивный дизайн */
 * {box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
-body{text-align:center;padding:40px 15px;background:#f9f9f9 url("bg.jpg");color:#222}
+body{text-align:center;padding:40px 15px;background:#f9f9f9 url("bg.jpg");color:color:#dddddd;}
 h1{margin-bottom:30px;font-size:28px}
 .btn{display:inline-block;width:90%;max-width:400px;margin:12px 0;padding:18px 24px;font-size:18px;border:none;border-radius:8px;text-decoration:none;color:#007bff;background:#ffffff;transition:.3s;border:1px solid #007bff}
 .btn:hover{opacity:.9;transform:translateY(-2px)}
