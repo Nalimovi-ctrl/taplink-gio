@@ -30,6 +30,6 @@ h1{margin-bottom:30px;font-size:28px}
 form{width:90%;max-width:400px;margin:20px auto;text-align:left}
 input,textarea{width:100%;margin:10px 0;padding:12px;border:1px solid #ccc;border-radius:6px;font-size:16px}
 textarea{min-height:100px;resize:vertical}
-form button{width:100%;padding:14px;font-size:16px;border:none;border-radius:6px;background:#28a745;color:#fff;cursor:pointer;transition:.3s}
 form button:hover{opacity:.9}
+form button{width:100%;padding:14px;font-size:16px;border:none;border-radius:6px;background:#28a745;color:#fff;cursor:pointer;transition:.3s}
 @media(min-width:600px){.btn,form{max-width:500px}}
