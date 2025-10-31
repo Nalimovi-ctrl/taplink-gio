@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Оставьте отзыв о Gio's</h1>
+ <h1 style="color:#dddddd;">Оставьте отзыв о Gio`s</h1>
 
-  <!-- Блок кнопок -->
+  <!-- Блок кнопок + звёзды -->
   <div class="button-group">
 
-    <!-- 1. Отзыв управляющему – сразу форма -->
+    <!-- 1. Отзыв управляющему — сразу форма -->
     <button class="btn accent" onclick="showForm()">Отзыв управляющему</button>
 
     <!-- 2. Яндекс Карты + звёзды -->
@@ -49,7 +49,6 @@
     <button type="submit">Отправить</button>
   </form>
 
-  <!-- Скрипты -->
   <script>
     /* ---------- Логика звёзд и переходов ---------- */
     let currentRating = 0;
@@ -58,6 +57,9 @@
     function rateAndGo(system) {
       currentSystem = system;
       currentRating = 0;
+
+      // ➜ СКРЫВАЕМ форму при смене системы
+      document.getElementById('managerForm').style.display = 'none';
 
       // Показываем звёзды выбранной системы
       document.getElementById(system + 'Stars').style.display = 'block';
