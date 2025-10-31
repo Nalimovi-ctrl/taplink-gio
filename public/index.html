@@ -7,129 +7,121 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <h1 style="color:#dddddd;">Оставьте отзыв о Gio`s</h1>
-   <!-- Блок кнопок + звёзды -->
-<div class="button-group">
+  <h1>Оставьте отзыв о Gio's</h1>
 
-  <!-- 1. Отзыв управляющему — сразу форма -->
-  <button class="btn accent" onclick="showForm()">Отзыв управляющему</button>
+  <!-- Блок кнопок -->
+  <div class="button-group">
 
-  <!-- 2. Яндекс Карты + звёзды -->
-  <button class="btn external" onclick="rateAndGo('yandex')">Яндекс Карты</button>
-  <div id="yandexStars" class="stars" style="display:none;">
-    <span class="star" data-v="1">★</span>
-    <span class="star" data-v="2">★</span>
-    <span class="star" data-v="3">★</span>
-    <span class="star" data-v="4">★</span>
-    <span class="star" data-v="5">★</span>
+    <!-- 1. Отзыв управляющему – сразу форма -->
+    <button class="btn accent" onclick="showForm()">Отзыв управляющему</button>
+
+    <!-- 2. Яндекс Карты + звёзды -->
+    <button class="btn external" onclick="rateAndGo('yandex')">Яндекс Карты</button>
+    <div id="yandexStars" class="stars" style="display:none;">
+      <span class="star" data-v="1">★</span>
+      <span class="star" data-v="2">★</span>
+      <span class="star" data-v="3">★</span>
+      <span class="star" data-v="4">★</span>
+      <span class="star" data-v="5">★</span>
+    </div>
+    <button id="yandexGoBtn" class="btn accent" style="display:none;" onclick="submitRating('yandex')">Отправить оценку</button>
+
+    <!-- 3. Google Карты + звёзды -->
+    <button class="btn external" onclick="rateAndGo('google')">Google Карты</button>
+    <div id="googleStars" class="stars" style="display:none;">
+      <span class="star" data-v="1">★</span>
+      <span class="star" data-v="2">★</span>
+      <span class="star" data-v="3">★</span>
+      <span class="star" data-v="4">★</span>
+      <span class="star" data-v="5">★</span>
+    </div>
+    <button id="googleGoBtn" class="btn accent" style="display:none;" onclick="submitRating('google')">Отправить оценку</button>
+
   </div>
-  <button id="yandexGoBtn" class="btn accent" style="display:none;">Отправить оценку</button>
 
-  <!-- 3. Google Карты + звёзды -->
-  <button class="btn external" onclick="rateAndGo('google')">Google Карты</button>
-  <div id="googleStars" class="stars" style="display:none;">
-    <span class="star" data-v="1">★</span>
-    <span class="star" data-v="2">★</span>
-    <span class="star" data-v="3">★</span>
-    <span class="star" data-v="4">★</span>
-    <span class="star" data-v="5">★</span>
-  </div>
-  <button id="googleGoBtn" class="btn accent" style="display:none;">Отправить оценку</button>
+  <!-- ЕДИНАЯ форма управляющему -->
+  <form id="managerForm" style="display:none;" onsubmit="sendReview(event)">
+    <input type="hidden" id="user_id" value="">
+    <input type="text" id="fio" placeholder="ФИО" required>
+    <input type="date" id="date" required>
+    <input type="tel" id="phone" placeholder="Номер телефона для связи" required>
+    <textarea id="text" placeholder="Как всё прошло?" required></textarea>
+    <button type="submit">Отправить</button>
+  </form>
 
-</div>
+  <!-- Скрипты -->
+  <script>
+    /* ---------- Логика звёзд и переходов ---------- */
+    let currentRating = 0;
+    let currentSystem = '';
 
-<!-- ЕДИНАЯ форма управляющему (показывается после 1-4 звёзд) -->
-<form id="managerForm" style="display:none;" onsubmit="sendReview(event)">
-  <input type="hidden" id="user_id" value="">
-  <input type="text" id="fio" placeholder="ФИО" required>
-  <input type="date" id="date" required>
-  <input type="tel" id="phone" placeholder="Номер телефона для связи" required>
-  <textarea id="text" placeholder="Как всё прошло?" required></textarea>
-  <button type="submit">Отправить</button>
-</form>
+    function rateAndGo(system) {
+      currentSystem = system;
+      currentRating = 0;
 
-<script>
-  /* ---------- Логика звёзд + переход / форма ---------- */
-  let currentRating = 0;
-  let currentSystem = '';
+      // Показываем звёзды выбранной системы
+      document.getElementById(system + 'Stars').style.display = 'block';
+      document.getElementById(system + 'GoBtn').style.display = 'inline-block';
 
-  function rateAndGo(system) {
-    currentSystem = system;
-    currentRating = 0;
+      // Прячем звёзды другой системы
+      const other = system === 'yandex' ? 'google' : 'yandex';
+      document.getElementById(other + 'Stars').style.display = 'none';
+      document.getElementById(other + 'GoBtn').style.display = 'none';
 
-    // Показываем звёзды выбранной системы
-    document.getElementById(system + 'Stars').style.display = 'block';
-    document.getElementById(system + 'GoBtn').style.display = 'inline-block';
-
-    // Прячем звёзды другой системы и их кнопки
-    const others = system === 'yandex' ? 'google' : 'yandex';
-    document.getElementById(others + 'Stars').style.display = 'none';
-    document.getElementById(others + 'GoBtn').style.display = 'none';
-
-    // Сброс выделения звёзд
-    document.querySelectorAll('#' + system + 'Stars .star').forEach(s => s.classList.remove('selected'));
-  }
-
-  /* Выбор звёзд для Яндекса */
-  document.querySelectorAll('#yandexStars .star').forEach(s =>
-    s.addEventListener('click', () => {
-      currentRating = parseInt(s.dataset.v);
-      document.querySelectorAll('#yandexStars .star').forEach((x, i) => x.classList.toggle('selected', i < currentRating));
-    })
-  );
-
-  /* Выбор звёзд для Google */
-  document.querySelectorAll('#googleStars .star').forEach(s =>
-    s.addEventListener('click', () => {
-      currentRating = parseInt(s.dataset.v);
-      document.querySelectorAll('#googleStars .star').forEach((x, i) => x.classList.toggle('selected', i < currentRating));
-    })
-  );
-
-  /* Кнопка «Отправить оценку» для Яндекса */
-  document.getElementById('yandexGoBtn').addEventListener('click', () => {
-    if (currentRating === 5) {
-      window.location.href = 'https://yandex.ru/maps/org/gio_s_gastrobar/217378885487/reviews/?ll=38.987867%2C55.808432&z=16';
-    } else {
-      showForm(); // 1-4 звезды → форма управляющему
+      // Сброс выделения
+      document.querySelectorAll('#' + system + 'Stars .star').forEach(s => s.classList.remove('selected'));
     }
-  });
 
-  /* Кнопка «Отправить оценку» для Google */
-  document.getElementById('googleGoBtn').addEventListener('click', () => {
-    if (currentRating === 5) {
-      window.location.href = 'https://www.google.com/search?q=Gio%27s+Gastrobar+Отзывы#lkt=LocalPoiReviews';
-    } else {
-      showForm(); // 1-4 звезды → форма управляющему
-    )
-  });
-
-  /* Показ формы управляющему (ваш старый код) */
-  function showForm() {
-    document.getElementById('managerForm').style.display = 'block';
-    window.scrollTo({ top: document.getElementById('managerForm').offsetTop, behavior: 'smooth' });
-  }
-
-  /* Отправка формы управляющему (ваш старый код) */
-  async function sendReview(e) {
-    e.preventDefault();
-    const fio = document.getElementById('fio').value.trim();
-    const date = document.getElementById('date').value;
-    const phone = document.getElementById('phone').value.trim();
-    const text = document.getElementById('text').value.trim();
-    const userId = document.getElementById('user_id').value || null;
-
-    if (!fio || !date || !phone || !text) { alert('Заполните все поля'); return; }
-
-    await fetch('/send-telegram', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fio, date, phone, text, user_id: userId })
+    /* Выбор звезды (общий обработчик) */
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('star') && e.target.closest('.stars')) {
+        const starsBlock = e.target.closest('.stars');
+        currentRating = parseInt(e.target.dataset.v);
+        starsBlock.querySelectorAll('.star').forEach((x, i) => x.classList.toggle('selected', i < currentRating));
+      }
     });
-    alert('Спасибо за отзыв!');
-    e.target.reset();
-    document.getElementById('managerForm').style.display = 'none';
-  }
-</script>
+
+    /* Отправка оценки */
+    function submitRating(system) {
+      if (currentRating === 5) {
+        // 5 звёзд → переход
+        if (system === 'yandex') {
+          window.location.href = 'https://yandex.ru/maps/org/gio_s_gastrobar/217378885487/reviews/?ll=38.987867%2C55.808432&z=16';
+        } else if (system === 'google') {
+          window.location.href = 'https://www.google.com/search?q=Gio%27s+Gastrobar+Отзывы#lkt=LocalPoiReviews';
+        }
+      } else {
+        // 1-4 звезды → форма управляющему
+        showForm();
+      }
+    }
+
+    /* Показ формы управляющему */
+    function showForm() {
+      document.getElementById('managerForm').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('managerForm').offsetTop, behavior: 'smooth' });
+    }
+
+    /* Отправка формы управляющему (ваш старый код) */
+    async function sendReview(e) {
+      e.preventDefault();
+      const fio = document.getElementById('fio').value.trim();
+      const date = document.getElementById('date').value;
+      const phone = document.getElementById('phone').value.trim();
+      const text = document.getElementById('text').value.trim();
+      const userId = document.getElementById('user_id').value || null;
+
+      if (!fio || !date || !phone || !text) { alert('Заполните все поля'); return; }
+
+      await fetch('/send-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fio, date, phone, text, user_id: userId })
+      });
+      alert('Спасибо за отзыв!');
+      e.target.reset();
+      document.getElementById('managerForm').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
